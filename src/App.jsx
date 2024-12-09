@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { backgroundGradient } from './animation';
 import NameCard from './components/NameCard';
 import NameList from './components/NameList';
 import NavigateButtons from './components/NavigateButtons';
@@ -9,15 +10,26 @@ const AppContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-image: url('https://cdn.pixabay.com/photo/2020/06/20/19/15/the-blue-flower-5322087_1280.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center
+  animation: ${backgroundGradient} 15s ease infinite;
   padding: 20px; 
   box-sizing: border-box;
-  text-align: center; 
+  text-align: center;
+  min-height: 100vh;
 `;
 
-
+const EmptyState = styled.div`
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+`;
 const namelist = [
   "Sophia", "Jackson", "Olivia", "Liam", "Emma",
   "Noah", "Ava", "Lucas", "Isabella", "Oliver",
@@ -29,7 +41,18 @@ const namelist = [
   "Henry", "Grace", "Joseph", "Lily", "Samuel",
   "Chloe", "David", "Victoria", "Carter", "Riley",
   "Wyatt", "Aria", "Jayden", "Zoey", "Gabriel",
+  "Whiskers", "Mittens", "Shadow", "Simba", "Luna",
+  "Oliver", "Leo", "Chloe", "Bella", "Lucy",
+  "Max", "Milo", "Tiger", "Cleo", "Smokey",
+  "Daisy", "Ginger", "Oreo", "Toby", "Pumpkin",
+  "Nala", "Loki", "Mochi", "Pepper", "Sassy",
+  "Snowball", "Buddy", "Garfield", "Patches", "Tigger",
+  "Maggie", "Sushi", "Midnight", "Cinnamon", "Marble",
+  "Hazel", "Penny", "Jasper", "Oscar", "Ash",
+  "Coco", "Kitty", "Pixie", "Sylvester", "Boots",
+  "Sunny", "Socks", "Prince", "Princess", "Zoe"
 ];
+
 
 const App = () => {
   const [names, setNames] = useState(namelist);
@@ -54,7 +77,7 @@ const App = () => {
   const handleMaybe = () => {
     const currentName = names[currentIndex];
     setMaybeNames((prev) => [...prev, currentName]);
-    handleRemoveCurrent();
+    setCurrentIndex((prev) => (prev + 1) % names.length);
   };
 
   const handleNo = () => {
@@ -91,7 +114,7 @@ const App = () => {
           />
         </>
       ) : (
-        <div>No more names to select!</div>
+        <EmptyState>No more names to select!</EmptyState>
       )}
       <NameList title="Selected Names" items={selectedNames} />
     </AppContainer>
